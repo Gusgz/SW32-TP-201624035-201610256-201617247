@@ -7,7 +7,7 @@ typedef unsigned int uint;
 
 
 template<typename T>
-class ListaDoblementeEnlazadaPrtIni {
+class ListaSimplementeEnlazadaCircularPrtIniPrtFin {
 	struct Node {
 		T elem;
 		Node* siguiente;
@@ -19,8 +19,8 @@ class ListaDoblementeEnlazadaPrtIni {
 	uint tamaño;
 
 public:
-	ListaDoblementeEnlazadaPrtIni() :ini(nullptr), fin(nullptr), tamaño(0) {}
-	~ListaDoblementeEnlazadaPrtIni() {
+	ListaSimplementeEnlazadaCircularPrtIniPrtFin() :ini(nullptr), fin(nullptr), tamaño(0) {}
+	~ListaSimplementeEnlazadaCircularPrtIniPrtFin() {
 		Node* aux = ini;
 		while (ini != nullptr) {
 			aux = ini;
@@ -89,8 +89,8 @@ public:
 
 	}
 
-	void mostrarLista(ListaDoblementeEnlazadaPrtIni<int>* elementos) {
-		ListaDoblementeEnlazadaPrtIni<int>::Iterator it;
+	void mostrarLista(ListaSimplementeEnlazadaCircularPrtIniPrtFin<int>* elementos) {
+		ListaSimplementeEnlazadaCircularPrtIniPrtFin<int>::Iterator it;
 		for (it = elementos->begin(); it != elementos->end(); ++it) {
 			cout << *it << " ";
 		}
