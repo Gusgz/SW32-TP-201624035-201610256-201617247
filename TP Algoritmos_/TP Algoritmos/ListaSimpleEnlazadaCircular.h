@@ -19,22 +19,6 @@ class ListaDoblementeEnlazadaPrtIni {
 	uint tamaño;
 
 public:
-	class iterator {
-		unsigned int    pos;
-		Node* aux;
-	public:
-		iterator(unsigned int pos, Node* aux) : pos(pos), aux(aux) {}
-		int begin() {
-			return this->ini;
-		}
-		int end() {
-			return this->fin;
-		}
-		void operator ++() { pos++; aux = aux->sig; }
-		bool operator !=(iterator x) { return pos != x.pos; }
-		int    operator  *() { return aux->elem; }
-	};
-
 	ListaDoblementeEnlazadaPrtIni() :ini(nullptr), fin(nullptr), tamaño(0) {}
 	~ListaDoblementeEnlazadaPrtIni() {
 		Node* aux = ini;
@@ -44,6 +28,26 @@ public:
 			delete aux;
 		}
 	}
+
+	class Iterator {
+		unsigned int    pos;
+		Node* aux;
+	public:
+		Iterator() :pos(0), aux(nullptr) {}
+		Iterator(unsigned int pos, Node* aux = nullptr) : pos(pos), aux(aux) {}
+		void operator ++() { pos++; aux = aux->siguiente; }
+		bool operator !=(Iterator x) { return pos != x.pos; }
+		T    operator  *() { return aux->elem; }
+	};
+
+	Iterator begin() {
+		return Iterator(0, ini);
+	}
+	Iterator end() {
+		return Iterator(tamaño, nullptr);
+	}
+
+
 
 	void insercionLista(T elem) {
 		Node* nuevo = new Node(elem);
@@ -85,7 +89,14 @@ public:
 
 	}
 
-	void mostrarLista() {
+	void mostrarLista(ListaDoblementeEnlazadaPrtIni<int>* elementos) {
+		ListaDoblementeEnlazadaPrtIni<int>::Iterator it;
+		for (it = elementos->begin(); it != elementos->end(); ++it) {
+			cout << *it << " ";
+		}
+
+
+		/*
 
 		Node* actual = ini;
 		int i;
@@ -93,7 +104,7 @@ public:
 			cout << actual->elem << " ";
 			actual = actual->siguiente;
 
-		}
+		}*/
 
 	}
 
