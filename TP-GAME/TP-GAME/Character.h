@@ -16,7 +16,6 @@ protected:
 public:
 	Character(int posX, int posY, int value, char figure);
 	~Character() {}
-	void DrawCharacter(char figure, int value);
 	void EraseCharacter();
 	int GetX();
 	int GetY();
@@ -44,11 +43,11 @@ public:
 					// X
 					string temp_x;
 					getline(iss, temp_x, ',');
-					posX = stoi(temp_x);
+					posX = stoi(temp_x);//cargar posicion x del caracater
 					// Y
 					string temp_y;
 					getline(iss, temp_y, ',');
-					posY = stoi(temp_y);
+					posY = stoi(temp_y);//cargar posicion y del caracater
 				}
 			}
 		}
@@ -73,11 +72,6 @@ Character::Character(int posX, int posY, int value, char figure) {
 	this->figure = figure;
 	this->value = value;
 	this->d = new Design();
-}
-void Character::DrawCharacter(char figure, int value) {
-	d->Gotoxy(this->posX, this->posY);
-	d->SetColor(value);
-	cout << char(figure);
 }
 void Character::EraseCharacter() {
 	d->Gotoxy(this->posX, this->posY);

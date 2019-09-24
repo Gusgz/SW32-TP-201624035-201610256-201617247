@@ -50,7 +50,7 @@ public:
 		delete fin;
 	}
 	T obtenerInicial();
-	T* obtenerPos(uint pos) {
+	T* obtenerPos(uint pos) {//retorna elemento en posicion enviada
 		if (pos >= 0 && pos < lon) {
 			Nodo* aux = ini;
 			for (int i = 0; i < pos; i++) {
@@ -71,4 +71,4 @@ struct Lista<T>::Nodo {
 	T* elem;
 	Nodo* sig;
 	Nodo(T* elem = nullptr, Nodo* sig = nullptr) : elem(elem), sig(sig) {}
-};
+};

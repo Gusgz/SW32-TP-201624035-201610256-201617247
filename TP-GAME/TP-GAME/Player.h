@@ -10,17 +10,20 @@
 #define LEFT 75
 #define ESCAPE 27
 #define ENTER 13
+#define GUARDAR 'g'
+#define CARGAR 'c'
 class Player : public Character {
 private:
 	int vidas;
 public:
 	Player();
 	Player(int posX, int posY, int value, char figure, int vidas);
-	void DrawPlayer(char figure, int value);
+	void DrawPlayer();
 	~Player();
 	void ErasePlayer();
-	void MovePlayer(Map* map);
-	//GZ
+	void Menu(Map* map, Design* d);
+	void Acciones(Map* map);
+
 	void MoveUp(Map* map);
 	void MoveDown(Map* map);
 	void MoveLeft(Map* map);
@@ -42,61 +45,15 @@ Player::Player(int posX, int posY, int value, char figure, int vidas) :Character
 	this->vidas = vidas;
 }
 
-void Player::DrawPlayer(char figure, int value) {
-	DrawCharacter(figure, value);
+void Player::DrawPlayer() {
+	d->Gotoxy(this->posX, this->posY);
+	d->SetColor(value);
+	cout << char(GetFigure());
 }
 void Player::ErasePlayer() {
 	EraseCharacter();
 }
 
-void Player::MovePlayer(Map* map) {//movimiento del pacman en el mapa
-	int key;
-
-	DrawPlayer(GetFigure(), getValue());
-	if (_kbhit()) {
-		SetdX(0);
-		SetdY(0);
-		key = _getch();
-		switch (key)
-		{
-		case LEFT:
-			if (map->GetMatrix(GetX() - 1, GetY()) == 0)
-				SetdX(-1);
-			break;
-		case RIGHT:
-			if (map->GetMatrix(GetX() + 1, GetY()) == 0)
-				SetdX(1);
-			break;
-		case UP:
-			if (map->GetMatrix(GetX(), GetY() - 1) == 0)
-				SetdY(-1);
-			break;
-		case DOWN:
-			if (map->GetMatrix(GetX(), GetY() + 1) == 0)
-				SetdY(1);
-			break;
-		case 'g':
-			//guardarMatriz();
-			//guardarPosicion(x, y);
-			break;
-		case 'c':
-			//system("cls");
-			//cout << "Cargando partida.";
-			//Sleep(1000); cout << "."; Sleep(1000); cout << "."; Sleep(1000); system("cls");
-			//cargarMatriz();
-			//dibujarMapa(FILAS, COLUMNAS);
-			//mostrarPosicionGuardada();
-			break;
-		default:
-			break;
-		}
-		ErasePlayer();
-		SetX(GetX() + GetdX());//movimiento del caracter(pacman) horizontal 
-		SetY(GetY() + GetdY());//movimiento del caracter(pacman) vertical
-	}
-}
-
-//GZ
 void Player::MoveUp(Map* map) {
 	if (map->GetMatrix(GetX(), GetY() - 1) == 0)
 		SetdY(-1);
@@ -113,4 +70,67 @@ void Player::MoveRight(Map* map) {
 	if (map->GetMatrix(GetX() + 1, GetY()) == 0)
 		SetdX(1);
 }
+
+void Player::Menu(Map* map, Design* d) {
+	int cont_y = 5;
+	d->SetColor(15);
+	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	cout << "[" << GUARDAR << "] Guardar partida" << endl;
+	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	cout << "[" << CARGAR << "] Cargar partida" << endl;
+	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	cout << "LISTA DE ENEMIGOS" << endl;
+}
+
+
+
+void Player::Acciones(Map* map) {//movimiento del pacman en el mapa
+	if (_kbhit()) {
+		int o = _getch();
+		switch (o)
+		{
+		case UP:
+			MoveUp(map);
+			break;
+		case DOWN:
+			MoveDown(map);
+			break;
+		case LEFT:
+			MoveLeft(map);
+			break;
+		case RIGHT:
+			MoveRight(map);
+			break;
+		case GUARDAR:
+			map->SaveMap();
+			SavePosition();
+			break;
+		case CARGAR:
+			system("cls");
+			//MAP
+			map->LoadMap();
+			d->Gotoxy(0, 0);
+			map->DrawMap(map->GetRows(), map->GetColumns());
+			//PLAYER
+			LoadPosition();
+			DrawPlayer();
+			//MENU
+			Menu(map, d);
+			break;
+		default:
+			break;
+		}
+		if (PlayerMoved()) {
+			ErasePlayer();
+			SetX(GetX() + GetdX());
+			SetY(GetY() + GetdY());
+			DrawPlayer();
+			SetdX(0);
+			SetdY(0);
+		}
+	}
+}
+
+
+
 // --------------------> Get and Set

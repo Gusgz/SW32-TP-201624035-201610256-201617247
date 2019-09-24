@@ -13,7 +13,7 @@ private:
 public:
 	Enemy(int posX, int posY, int value, char figure);
 	~Enemy() {}
-	void DrawEnemy(char figure, int value);
+	void DrawEnemy();
 	void EraseEnemy();
 	void MoveEnemy(Map* map);
 	int GetX();
@@ -38,8 +38,10 @@ Enemy::Enemy(int posX, int posY, int value, char figure) :Character(posX, posY, 
 	d = new Design();
 }
 
-void Enemy::DrawEnemy(char figure, int value) {
-	DrawCharacter(figure, value);
+void Enemy::DrawEnemy() {
+	d->Gotoxy(this->posX, this->posY);
+	d->SetColor(value);
+	cout << char(figure);
 }
 void Enemy::EraseEnemy() {
 	EraseCharacter();
@@ -52,7 +54,7 @@ void Enemy::MoveEnemy(Map* map) {//movimiento de enemigo en el mapa
 		SetdX(0);
 		SetdY(0);
 
-		DrawEnemy(GetFigure(), getValue());
+		DrawEnemy();
 		switch (random)
 		{
 		case 0:
@@ -78,7 +80,7 @@ void Enemy::MoveEnemy(Map* map) {//movimiento de enemigo en el mapa
 
 		SetX(GetX() + GetdX());
 		SetY(GetY() + GetdY());
-		DrawEnemy(GetFigure(), getValue());
+		DrawEnemy();
 	}
 	move = move + 0.01;
 }
