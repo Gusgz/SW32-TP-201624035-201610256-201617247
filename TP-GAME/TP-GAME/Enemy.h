@@ -7,7 +7,7 @@
 #include "Character.h"
 class Enemy :public Character {
 private:
-	int daño;
+	float move;
 	bool status; // 0 muerto 1 vivo
 	Design* d;
 public:
@@ -33,7 +33,8 @@ Enemy::Enemy(int posX, int posY, int value, char figure) :Character(posX, posY, 
 	this->posY = posY;
 	this->dX = 0;
 	this->dY = 0;
-	this->daño = 100;
+	this->move = 0;
+	this->status = true;
 	d = new Design();
 }
 
@@ -44,7 +45,8 @@ void Enemy::EraseEnemy() {
 	EraseCharacter();
 }
 void Enemy::MoveEnemy(Map* map) {//movimiento de enemigo en el mapa
-	if (daño % 1994 == 0) {
+	if (move > 1000 && status == true) {
+		this->move = 0;
 		int random;
 		random = rand() % 4;
 		SetdX(0);
@@ -78,7 +80,7 @@ void Enemy::MoveEnemy(Map* map) {//movimiento de enemigo en el mapa
 		SetY(GetY() + GetdY());
 		DrawEnemy(GetFigure(), getValue());
 	}
-	daño++;
+	move = move + 0.01;
 }
 // GET AND SET
 int Enemy::GetX() { return this->posX; }

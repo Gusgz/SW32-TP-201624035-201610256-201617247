@@ -130,6 +130,7 @@
     <ClInclude Include="Cola.h" />
     <ClInclude Include="Design.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Lista.h" />
     <ClInclude Include="ListaDoblementeEnlazadaPiniPfin.h" />
     <ClInclude Include="ListaSimpleEnlazadaCircular.h" />
     <ClInclude Include="ListCircle.h" />

@@ -6,7 +6,9 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "ListCircle.h"
+// GZ
 #include "Cola.h"
+#include "Lista.h"
 using namespace std;
 #define UP 72
 #define DOWN 80
@@ -93,8 +95,13 @@ int main() {
 	Design* d = new Design();
 	Player* p = new Player(1, 1, 15, 'C', 3);
 	p->DrawPlayer('C',3);
-	Enemy* e = new Enemy(30, 12, 2, char(223));
-	// CREACION DE COLA ENEMIGOS
+	// LISTA DE ENEMIGOS RECIEN CREADOS
+	Lista<Enemy>* listEnemy = new Lista<Enemy>();
+	for (int i = 0; i < 5; i++) {
+		Enemy* aux = new Enemy(30, 12, 2, char(223));
+		listEnemy->agregaInicial(aux);
+	}
+	// COLA DE ENEMIGOS ELIMINADOS
 	Cola<Enemy>* cEnemy = new Cola<Enemy>();
 	Menu(map, d);
 	while (1) {
@@ -102,16 +109,17 @@ int main() {
 		//e->MoveEnemy(map);
 		//GZ
 		Acciones(map, p, d);
-		if (Crashed(p, e)) {
-			cout << "Comido" << endl;
-			e->SetX(2);
-			e->SetY(map->GetRows() + 2);
-			cEnemy->Enqueue(e);
-			e->SetStatus();
-			e->DrawEnemy(char(223),2);
+		for(int i = 0; i < listEnemy->longitud();i++)
+		if (Crashed(p, listEnemy->obtenerPos(i))) {
+			cEnemy->Enqueue(listEnemy->obtenerPos(i));
+			listEnemy->obtenerPos(i)->SetX(i+2);
+			listEnemy->obtenerPos(i)->SetY(map->GetRows() + 2);
+			listEnemy->obtenerPos(i)->SetStatus();
+			listEnemy->obtenerPos(i)->DrawEnemy(char(223),2);
 		}
 		else {
-			e->MoveEnemy(map);
+			for (int i = 0; i < listEnemy->longitud(); i++)
+				listEnemy->obtenerPos(i)->MoveEnemy(map);
 		}
 	}
 	return 0;
