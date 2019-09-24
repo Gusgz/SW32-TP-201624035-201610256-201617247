@@ -8,6 +8,7 @@
 class Enemy :public Character {
 private:
 	int daño;
+	bool status; // 0 muerto 1 vivo
 	Design* d;
 public:
 	Enemy(int posX, int posY, int value, char figure);
@@ -23,7 +24,8 @@ public:
 	int GetdY();
 	void SetdX(int dX);
 	void SetdY(int dY);
-
+	// GZ
+	void SetStatus() { this->status = !status; }
 };
 
 Enemy::Enemy(int posX, int posY, int value, char figure) :Character(posX, posY, value, figure) {

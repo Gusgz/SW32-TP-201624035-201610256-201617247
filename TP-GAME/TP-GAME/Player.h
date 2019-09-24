@@ -17,10 +17,24 @@ public:
 	Player();
 	Player(int posX, int posY, int value, char figure, int vidas);
 	void DrawPlayer(char figure, int value);
+	~Player();
 	void ErasePlayer();
 	void MovePlayer(Map* map);
-	~Player();
-
+	//GZ
+	void MoveUp(Map* map);
+	void MoveDown(Map* map);
+	void MoveLeft(Map* map);
+	void MoveRight(Map* map);
+	bool PlayerMoved() {
+		if (this->dX != 0 || this->dY != 0)
+			return true;
+	}
+	void LoadPosition() {
+		Character::LoadPosition();
+	}
+	void SavePosition() {
+		Character::SavePosition();
+	}
 
 };
 
@@ -80,5 +94,23 @@ void Player::MovePlayer(Map* map) {//movimiento del pacman en el mapa
 		SetX(GetX() + GetdX());//movimiento del caracter(pacman) horizontal 
 		SetY(GetY() + GetdY());//movimiento del caracter(pacman) vertical
 	}
+}
+
+//GZ
+void Player::MoveUp(Map* map) {
+	if (map->GetMatrix(GetX(), GetY() - 1) == 0)
+		SetdY(-1);
+}
+void Player::MoveDown(Map* map) {
+	if (map->GetMatrix(GetX(), GetY() + 1) == 0)
+		SetdY(1);
+}
+void Player::MoveLeft(Map* map) {
+	if (map->GetMatrix(GetX() - 1, GetY()) == 0)
+		SetdX(-1);
+}
+void Player::MoveRight(Map* map) {
+	if (map->GetMatrix(GetX() + 1, GetY()) == 0)
+		SetdX(1);
 }
 // --------------------> Get and Set

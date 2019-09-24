@@ -29,7 +29,40 @@ public:
 	int GetdY();
 	void SetdX(int dX);
 	void SetdY(int dY);
-
+	//GZ
+	void LoadPosition() {
+		ifstream File("Character.txt");
+		if (!File.is_open())
+			cout << "Failed" << endl;
+		else {
+			string line;
+			while (getline(File, line)) {
+				istringstream iss(line);
+				string temp_f;
+				getline(iss, temp_f, ',');
+				if (this->figure == temp_f[0]) {
+					// X
+					string temp_x;
+					getline(iss, temp_x, ',');
+					posX = stoi(temp_x);
+					// Y
+					string temp_y;
+					getline(iss, temp_y, ',');
+					posY = stoi(temp_y);
+				}
+			}
+		}
+		File.close();
+	}
+	void SavePosition() {
+		ofstream File("Character.txt");
+		if (!File.is_open())
+			cout << "Failed" << endl;
+		else {
+			File << figure << ',' << posX << ',' << posY << endl;
+		}
+		File.close();
+	}
 };
 
 Character::Character(int posX, int posY, int value, char figure) {
