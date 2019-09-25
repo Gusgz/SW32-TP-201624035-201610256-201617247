@@ -8,6 +8,8 @@
 #include "ListCircle.h"
 #include "Cola.h"
 #include "Lista.h" 
+#include"PilaNumeroVidas.h"
+
 #define UP 72
 #define DOWN 80
 #define RIGHT 77
@@ -23,7 +25,7 @@ bool Colisionar(Player* p, Enemy* e) {
 	else
 		return false;
 }
-void Menu(Map* map, Design* d) {
+void Menu(Map* map, Design* d,pilaNumeroVidas<char>* vidas) {
 	int cont_y = 5;
 	d->SetColor(15);
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
@@ -33,8 +35,16 @@ void Menu(Map* map, Design* d) {
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
 	cout << "[ESCAPE] SALIR DEL JUEGO..." << endl;
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	cout << "NUMEROS DE VIDAS : " << endl;
+	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	for(int i=0;i<vidas->tamaño();i++)
+	cout << vidas->top()<<" " ;
+
+
+
 }
-void KeyPressed(Map* map, Player* p, Design* d, int o) {
+void KeyPressed(Map* map, Player* p, Design* d, int o,pilaNumeroVidas<char>* vidas) {
 		switch (o)
 		{
 		case UP: case DOWN: case LEFT: case RIGHT:
@@ -56,7 +66,7 @@ void KeyPressed(Map* map, Player* p, Design* d, int o) {
 			p->LoadPosition();
 			p->DrawCharacter();
 			// MENU
-			Menu(map, d);
+			Menu(map, d,vidas);
 			break;
 		case ESCAPE:
 			exit(0);
@@ -83,11 +93,18 @@ int main() {
 	}
 	// COLA DE ENEMIGOS ELIMINADOS
 	Cola<Enemy>* cEnemy = new Cola<Enemy>();
-	Menu(map, d);
+	//IMPLEMENTANDO VIDAS
+	pilaNumeroVidas<char>* vidas = new pilaNumeroVidas<char>();
+	for (int i = 0; i < 3; i++) { // el jugasdpor siempre inicia con tres vidas
+		vidas->push('C');
+	}
+
+
+	Menu(map, d,vidas);
 	while (1) {
 		if (_kbhit()) {
 			int o = _getch();
-			KeyPressed(map, p, d, o);
+			KeyPressed(map, p, d, o,vidas);
 		}
 		for (int i = 0; i < listEnemy->longitud(); i++) {
 			if (Colisionar(p, listEnemy->obtenerPos(i))) {//si colisionan
@@ -97,7 +114,7 @@ int main() {
 				listEnemy->obtenerPos(i)->SetEstado(false);//cambia a muerto
 
 				cEnemy->Enqueue(listEnemy->obtenerPos(i));//enviados a la cola de fantasmas eliminados
-				
+				vidas->pop();
 				d->Gotoxy(2, map->GetRows() + 2);
 			}
 			else

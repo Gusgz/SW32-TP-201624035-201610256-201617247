@@ -48,4 +48,8 @@ public:
 		return 0;
 	}
 
+	int tamaño() {
+		return this->len;
+	}
+
 };
