@@ -1,9 +1,8 @@
 #pragma once
 #include<iostream>
-
 using namespace std;
 template<typename T>
-class pilaNumeroVidas {
+class pilaNumeroVidas{
 	struct Node {
 		T elem;
 		Node* next;
