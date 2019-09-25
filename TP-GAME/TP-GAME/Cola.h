@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 template <typename T>
 class Cola {
 private:
@@ -42,10 +43,17 @@ public:
 			return aux->element;
 		}
 	}
+	T* GetElementPos(int pos) {
+		Node* aux = head;
+		for (int i = 0; i < pos; i++) {
+			aux = aux->next;
+		}
+		return aux->element;
+	}
 	void Show() {
 		Node* aux = head;
 		for (int i = 0; i < lenght; i++) {
-			std::cout << aux->element << "|";
+			std::cout << aux->element->GetFigure() << " ";
 			aux = aux->next;
 		}
 	}

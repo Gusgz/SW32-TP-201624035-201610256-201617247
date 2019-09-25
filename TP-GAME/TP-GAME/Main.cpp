@@ -7,46 +7,127 @@
 #include "Enemy.h"
 #include "ListCircle.h"
 #include "Cola.h"
-#include "Lista.h"
+#include "Lista.h" 
+#define UP 72
+#define DOWN 80
+#define RIGHT 77
+#define LEFT 75
+#define ESCAPE 27
+#define ENTER 13
+#define GUARDAR 'g'
+#define CARGAR 'c'
 using namespace std;
-
-bool Crashed(Player* p, Enemy* e) {
+bool Colisionar(Player* p, Enemy* e) {
 	if (p->GetX() == e->GetX() && p->GetY() == e->GetY())
 		return true;
 	else
 		return false;
 }
-
+void Menu(Map* map, Design* d) {
+	int cont_y = 5;
+	d->SetColor(15);
+	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	cout << "[G] GUARDAR PARTIDA" << endl;
+	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	cout << "[C] CARGAR PARTIDA" << endl;
+	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	cout << "[ESCAPE] SALIR DEL JUEGO..." << endl;
+	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+}
+void KeyPressed(Map* map, Player* p, Design* d, int o) {
+		switch (o)
+		{
+		case UP: case DOWN: case LEFT: case RIGHT:
+			p->MovePlayer(o);
+			break;
+		case GUARDAR:
+			// MAP
+			map->SaveMap();
+			// PLAYER
+			p->SavePosition();
+			break;
+		case CARGAR:
+			system("cls");
+			// MAP
+			d->Gotoxy(0, 0);
+			map->LoadMap();
+			map->DrawMap(map->GetRows(), map->GetColumns());
+			// PLAYER
+			p->LoadPosition();
+			p->DrawCharacter();
+			// MENU
+			Menu(map, d);
+			break;
+		case ESCAPE:
+			exit(0);
+			break;
+		default:
+			break;
+		}
+}
 int main() {
+	bool menu = true; bool comido = false;
 	Map* map = new Map();
 	map->LoadMap();
 	map->DrawMap(map->GetRows(), map->GetColumns());
-	Design* d = new Design();
-	Player* p = new Player(1, 1, 15, 'C', 3);
-	p->DrawPlayer();
+	Design* d = new Design(); // Gotoxy SetColor
+	Player* p = new Player(1, 1,'P',15,map,5);
+	p->DrawCharacter();
 	 //LISTA DE ENEMIGOS RECIEN CREADOS
 	Lista<Enemy>* listEnemy = new Lista<Enemy>();
+	int color_rand = 0;
 	for (int i = 0; i < 5; i++) {
-		Enemy* aux = new Enemy(30, 12, 2, char(223));
+		color_rand = rand()%4+11;
+		Enemy* aux = new Enemy(30, 12, char(223), color_rand, map);
 		listEnemy->agregaInicial(aux);
 	}
 	// COLA DE ENEMIGOS ELIMINADOS
 	Cola<Enemy>* cEnemy = new Cola<Enemy>();
-	p->Menu(map, d);
+	Menu(map, d);
 	while (1) {
-		p->Acciones(map);
-		for(int i = 0; i < listEnemy->longitud();i++)
-		if (Crashed(p, listEnemy->obtenerPos(i))) {//si colisionan
-			cEnemy->Enqueue(listEnemy->obtenerPos(i));//enviados a la cola de fantasmas eliminados
-			listEnemy->obtenerPos(i)->SetX(i+8);//cuando los captura lo cambia de posicion en x
-			listEnemy->obtenerPos(i)->SetY(map->GetRows() + 2);//cambia de posicion en y
-			listEnemy->obtenerPos(i)->SetStatus();//cambia a muerto
-			listEnemy->obtenerPos(i)->DrawEnemy();//lo dibuja
+		if (_kbhit()) {
+			int o = _getch();
+			KeyPressed(map, p, d, o);
 		}
-		else {
-			for (int i = 0; i < listEnemy->longitud(); i++)
-				listEnemy->obtenerPos(i)->MoveEnemy(map);
+		for (int i = 0; i < listEnemy->longitud(); i++) {
+			if (Colisionar(p, listEnemy->obtenerPos(i))) {//si colisionan
+				comido = true;
+				listEnemy->obtenerPos(i)->SetX(0);
+				listEnemy->obtenerPos(i)->SetY(0);
+				listEnemy->obtenerPos(i)->SetEstado(false);//cambia a muerto
+
+				cEnemy->Enqueue(listEnemy->obtenerPos(i));//enviados a la cola de fantasmas eliminados
+				
+				d->Gotoxy(2, map->GetRows() + 2);
+			}
+			else
+				listEnemy->obtenerPos(i)->MoveEnemy();
+		}
+		if (comido == true) {
+			for (int i = 0; i < cEnemy->Size(); i++) {
+				d->Gotoxy(i+2,map->GetRows()+3);
+				d->SetColor(cEnemy->GetElementPos(i)->GetColorFigure());
+				cout << cEnemy->GetElementPos(i)->GetFigure() << "  ";
+			}
+			comido = false;
 		}
 	}
 	return 0;
 }
+
+//BLACK                   0
+//BLUE                    1
+//GREEN                   2
+//CYAN                    3
+//RED                     4
+//MAGENTA                 5
+//BROWN                   6
+//LIGHTGRAY               7
+//DARKGRAY                8
+//LIGHTBLUE               9
+//LIGHTGREEN             10
+//LIGHTCYAN              11 ENEMY
+//LIGHTRED               12 ENEMY
+//LIGHTMAGENTA           13 ENEMY
+//YELLOW                 14 ENEMY
+//WHITE                  15

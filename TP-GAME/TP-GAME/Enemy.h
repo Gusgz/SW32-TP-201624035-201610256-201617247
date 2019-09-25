@@ -2,94 +2,83 @@
 #pragma once
 #include <iostream>
 #include <Windows.h>
-#include "Map.h"
-#include "Design.h"
 #include "Character.h"
 class Enemy :public Character {
 private:
-	float move;
-	bool status; // 0 muerto 1 vivo
-	Design* d;
+	double move;
+	bool estado;
 public:
-	Enemy(int posX, int posY, int value, char figure);
-	~Enemy() {}
-	void DrawEnemy();
-	void EraseEnemy();
-	void MoveEnemy(Map* map);
-	int GetX();
-	int GetY();
-	void SetX(int x);
-	void SetY(int y);
-	int GetdX();
-	int GetdY();
-	void SetdX(int dX);
-	void SetdY(int dY);
-	// GZ
-	void SetStatus() { this->status = !status; }
+	// CONSTRUCTORES
+	Enemy();
+	Enemy(int x, int y, char figure, int color, Map* map);
+	~Enemy();
+	// METODOS
+	void MoveEnemy();
+	void Dead();
+	// GET
+	bool GetEstado();
+	// SET
+	void SetEstado(bool estado);
 };
-
-Enemy::Enemy(int posX, int posY, int value, char figure) :Character(posX, posY, value, figure) {
-	this->posX = posX;
-	this->posY = posY;
-	this->dX = 0;
-	this->dY = 0;
-	this->move = 0;
-	this->status = true;
-	d = new Design();
+// CONSTRUCTORES
+Enemy::Enemy() {
+	Character::Character();
+	move = 0;
+	estado = true;
 }
-
-void Enemy::DrawEnemy() {
-	d->Gotoxy(this->posX, this->posY);
-	d->SetColor(value);
-	cout << char(figure);
+Enemy::Enemy(int x, int y, char figure, int color, Map* map) : Character(x, y, figure, color, map) {
+	move = 0;
+	estado = true;
 }
-void Enemy::EraseEnemy() {
-	EraseCharacter();
+Enemy::~Enemy() {
+	Character::~Character();
 }
-void Enemy::MoveEnemy(Map* map) {//movimiento de enemigo en el mapa
-	if (move > 1000 && status == true) {
-		this->move = 0;
+void Enemy::MoveEnemy() {//movimiento de enemigo en el mapa
+	if (move > 1000 && estado == true) {
+		EraseCharacter();
+		move = 0;
 		int random;
 		random = rand() % 4;
-		SetdX(0);
-		SetdY(0);
-
-		DrawEnemy();
+		Setdx(0);
+		Setdy(0);
 		switch (random)
 		{
 		case 0:
 			if (map->GetMatrix(GetX() - 1, GetY()) == 0)
-				SetdX(-1);
+				Setdx(-1);
 			break;
 		case 1:
 			if (map->GetMatrix(GetX() + 1, GetY()) == 0)
-				SetdX(1);
+				Setdx(1);
 			break;
 		case 2:
 			if (map->GetMatrix(GetX(), GetY() - 1) == 0)
-				SetdY(-1);
+				Setdy(-1);
 			break;
 		case 3:
 			if (map->GetMatrix(GetX(), GetY() + 1) == 0)
-				SetdY(1);
+				Setdy(1);
 			break;
 		default:
 			break;
 		}
-		EraseEnemy();
-
-		SetX(GetX() + GetdX());
-		SetY(GetY() + GetdY());
-		DrawEnemy();
+		SetX(GetX() + Getdx());
+		SetY(GetY() + Getdy());
+		DrawCharacter();
 	}
-	move = move + 0.01;
+	else
+		move = move + 0.1;
 }
-// GET AND SET
-int Enemy::GetX() { return this->posX; }
-int Enemy::GetY() { return this->posY; }
-void Enemy::SetX(int x) { this->posX = x; }
-void Enemy::SetY(int y) { this->posY = y; }
-int Enemy::GetdX() { return this->dX; }
-int Enemy::GetdY() { return this->dY; }
-void Enemy::SetdX(int dX) { this->dX = dX; }
-void Enemy::SetdY(int dY) { this->dY = dY; }
+void Enemy::Dead() {
+	x = 0;
+	y = 0;
+	figure = 'D';
+}
+// GET
+bool Enemy::GetEstado() {
+	return estado;
+}
+// SET
+void Enemy::SetEstado(bool estado) {
+	this->estado = estado;
+}

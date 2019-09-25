@@ -1,5 +1,5 @@
 #pragma once
-#include <windows.h>
+#include <Windows.h>
 #include <cstdlib>
 #include <stdio.h>
 class Design
