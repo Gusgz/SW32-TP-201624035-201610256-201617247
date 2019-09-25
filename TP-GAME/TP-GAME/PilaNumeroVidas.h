@@ -51,4 +51,28 @@ public:
 		return this->len;
 	}
 
+	void guardarNumeroVidas() {
+		ofstream archivo("Numero de vidas.text");
+		if (!archivo.is_open()) {
+			cout << "no se pudo guardar en el archivo" << endl;
+		}
+		string linea;
+		for(int i=0;i<this->tamaño();i++)
+		archivo << "Numero de vidas : "<<top()<<",";
+		archivo.close();
+	}
+
+	void mostrarNumeroVidas() {
+		ifstream archivo("Numero de vidas.text");
+		if (!archivo.is_open()) {
+			cout << "no se pudo abrir el archivo" << endl;
+		}
+		string linea;
+		while (getline(archivo, linea,',')) {
+			cout << linea ;
+		}
+	}
+
+
+
 };

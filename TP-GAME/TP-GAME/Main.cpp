@@ -31,11 +31,14 @@ void Menu(Map* map, Design* d,pilaNumeroVidas<char>* vidas) {
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
 	cout << "[G] GUARDAR PARTIDA" << endl;
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	
 	cout << "[C] CARGAR PARTIDA" << endl;
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+	
 	cout << "[ESCAPE] SALIR DEL JUEGO..." << endl;
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
+
 	cout << "NUMEROS DE VIDAS : " << endl;
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
 	for(int i=0;i<vidas->tamaño();i++)
@@ -53,6 +56,8 @@ void KeyPressed(Map* map, Player* p, Design* d, int o,pilaNumeroVidas<char>* vid
 		case GUARDAR:
 			// MAP
 			map->SaveMap();
+			//VIDAS
+			vidas->guardarNumeroVidas();
 			// PLAYER
 			p->SavePosition();
 			break;
@@ -65,6 +70,8 @@ void KeyPressed(Map* map, Player* p, Design* d, int o,pilaNumeroVidas<char>* vid
 			// PLAYER
 			p->LoadPosition();
 			p->DrawCharacter();
+			//VIDAS
+			//vidas->mostrarNumeroVidas();
 			// MENU
 			Menu(map, d,vidas);
 			break;
@@ -75,6 +82,13 @@ void KeyPressed(Map* map, Player* p, Design* d, int o,pilaNumeroVidas<char>* vid
 			break;
 		}
 }
+
+
+
+
+
+
+
 int main() {
 	bool menu = true; bool comido = false;
 	Map* map = new Map();
@@ -93,11 +107,16 @@ int main() {
 	}
 	// COLA DE ENEMIGOS ELIMINADOS
 	Cola<Enemy>* cEnemy = new Cola<Enemy>();
+
+
 	//IMPLEMENTANDO VIDAS
 	pilaNumeroVidas<char>* vidas = new pilaNumeroVidas<char>();
 	for (int i = 0; i < 3; i++) { // EL JUGADOR SIEMPRE INICIA CON 3 VIDAS
 		vidas->push('C');
 	}
+
+
+
 
 
 	Menu(map, d,vidas);
