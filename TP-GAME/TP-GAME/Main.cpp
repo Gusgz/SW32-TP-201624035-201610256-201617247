@@ -39,7 +39,7 @@ void Menu(Map* map, Design* d,pilaNumeroVidas<char>* vidas) {
 	cout << "NUMEROS DE VIDAS : " << endl;
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
 	for(int i=0;i<vidas->tamaño();i++)
-	cout << vidas->top()<<" " ;
+	cout << vidas->top()<<" " ;// MOSTRANDO VIDAS 
 
 
 
@@ -95,7 +95,7 @@ int main() {
 	Cola<Enemy>* cEnemy = new Cola<Enemy>();
 	//IMPLEMENTANDO VIDAS
 	pilaNumeroVidas<char>* vidas = new pilaNumeroVidas<char>();
-	for (int i = 0; i < 3; i++) { // el jugasdpor siempre inicia con tres vidas
+	for (int i = 0; i < 3; i++) { // EL JUGADOR SIEMPRE INICIA CON 3 VIDAS
 		vidas->push('C');
 	}
 
@@ -114,7 +114,7 @@ int main() {
 				listEnemy->obtenerPos(i)->SetEstado(false);//cambia a muerto
 
 				cEnemy->Enqueue(listEnemy->obtenerPos(i));//enviados a la cola de fantasmas eliminados
-				vidas->pop();
+				vidas->pop();// QUITANDO VIDAS CUANDO COLISIONAN
 				d->Gotoxy(2, map->GetRows() + 2);
 			}
 			else
