@@ -10,6 +10,9 @@
 #include "Cola.h"
 #include "Lista.h" 
 #include"PilaNumeroVidas.h"
+#include "Win.h"
+#include "Lose.h"
+
 
 #define UP 72
 #define DOWN 80
@@ -128,7 +131,7 @@ int main() {
 	}
 	
 	Menu(map, d,vidas);
-	while (1) {
+	while ((!vidas->is_empty()) && !((p->GetX() == 47 && p->GetY() == 23) || (p->GetX() == 48 && p->GetY() == 22))) {
 		if (_kbhit()) {
 			int o = _getch();
 			KeyPressed(map, p, d, o,vidas);
@@ -168,6 +171,27 @@ int main() {
 			comido = false;
 		}
 	}
+
+	if (vidas->is_empty()) {
+
+		Lose* lose = new Lose();
+		system("cls");
+		lose->LoadLose();
+		lose->DrawLose(lose->GetRows(), lose->GetColumns());
+		_getch();
+		exit(0);
+	}
+	else if ((p->GetX() == 47 && p->GetY() == 23) || (p->GetX() == 48 && p->GetY() == 22)) {
+
+		Win* w = new Win();
+		system("cls");
+		w->LoadWin();
+		w->DrawWin(w->GetRows(), w->GetColumns());
+		_getch();
+		exit(0);
+	}
+
+
 	return 0;
 }
 
