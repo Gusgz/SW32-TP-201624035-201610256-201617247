@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 using namespace std;
+#include"Enemy.h"
 typedef unsigned int uint;
 template <typename T>
 class Lista {
@@ -29,6 +30,30 @@ public:
 			lon++;
 		}
 	}
+
+	class Iterator {
+		unsigned int    pos;
+		Nodo* aux;
+	public:
+		Iterator() :pos(0), aux(nullptr) {}
+		Iterator(unsigned int pos, Nodo* aux = nullptr) : pos(pos), aux(aux) {}
+		void operator ++() { pos++; aux = aux->sig; }
+		bool operator !=(Iterator x) { return pos != x.pos; }
+		T    operator  *() { return aux->elem; }
+		uint Positerador() {// retorna la posicion para hacer la comparacion
+			return this->pos;
+		}
+	};
+
+	Iterator begin() {
+		return Iterator(0, ini);
+	}
+	Iterator end() {
+		return Iterator(lon, nullptr);// aca va el tamaño osea lon o tamaño
+	}
+
+
+
 	void agregaPos(T elem, uint pos);
 	void agregaFinal(T elem);
 	void modificarInicial(T elem);
@@ -81,6 +106,7 @@ public:
 		else {
 			return nullptr;
 		}
+
 	}
 	T buscar(T elem);
 };

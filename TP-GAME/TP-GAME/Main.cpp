@@ -21,6 +21,7 @@
 #define ENTER 13
 #define GUARDAR 'g'
 #define CARGAR 'c'
+#define VIDAS 118
 using namespace std;
 
 
@@ -139,9 +140,15 @@ void KeyPressed(int o) {
 
 			VerColaEnemigos();
 			break;
+			//CARGAR VIDAS
+			vidas->mostrarNumeroVidas();
+
 		case ESCAPE:
 			exit(0);
 			break;
+
+		case 'v':
+			vidas->pushVidas(p->GetFigure());
 		default:
 			break;
 		}
