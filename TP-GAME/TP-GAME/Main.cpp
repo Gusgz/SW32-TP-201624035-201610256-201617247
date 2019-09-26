@@ -2,6 +2,7 @@
 #include <thread>
 #include <conio.h>
 #include <time.h>
+#include <ctime>
 #include "Map.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -81,32 +82,51 @@ void KeyPressed(Map* map, Player* p, Design* d, int o,pilaNumeroVidas<char>* vid
 }
 
 int main() {
+	// TIEMPO
+	//time_t now;
+	//struct tm* t;
+	//now = time(NULL);
+
 	bool comido = false;
 	Map* map = new Map();
 	map->LoadMap();
 	map->DrawMap(map->GetRows(), map->GetColumns());
 	Design* d = new Design(); // Gotoxy como apoyo en coord,diseño y cursor
 	d->HideCursor();
-	Player* p = new Player(1, 1,char(184),2,map);
+	// JUGADOR
+	Player* p = new Player(1, 1,char(184),15,map);
 	p->DrawCharacter();
 	 //LISTA DE ENEMIGOS RECIEN CREADOS
 	Lista<Enemy>* listEnemy = new Lista<Enemy>();
-	int color_rand = 0;
-	for (int i = 0; i < 5; i++) {
-		color_rand = rand()%4+11;
-		Enemy* aux = new Enemy(30, 12, char(223), color_rand, map);
-		listEnemy->agregaInicial(aux);
+	//int color_rand = 0;
+	//for (int i = 0; i < 15; i++) {
+	//	color_rand = rand()%(4,12);
+	//	Enemy* aux = new Enemy(30, 12, char(223), color_rand, map);
+	//	listEnemy->agregaInicial(aux);
+	//}
+	int rand_create = 0;
+	for (int i = 0; i < map->GetRows();i++) {
+		for (int j = 0; j < map->GetColumns();j++) {
+			rand_create = rand() % 10;
+			if(i > 3 && j > 3)
+			if (map->GetMatrix(j, i) == 0 && rand_create == 5) {
+				int color_rand = rand() % 3 + 1;
+				Enemy* aux = new Enemy(j, i, char(223), color_rand, map);
+				aux->DrawCharacter();
+				listEnemy->agregaInicial(aux);
+			}
+		}
 	}
+
 	// COLA DE ENEMIGOS ELIMINADOS
 	Cola<Enemy>* cEnemy = new Cola<Enemy>();
-
-
+	cEnemy->SetMaxLength(10);
 	//IMPLEMENTANDO VIDAS
 	pilaNumeroVidas<char>* vidas = new pilaNumeroVidas<char>();
 	for (int i = 0; i < 3; i++) { // EL JUGADOR SIEMPRE INICIA CON 3 VIDAS
 		vidas->push(p->GetFigure());
 	}
-
+	
 	Menu(map, d,vidas);
 	while (1) {
 		if (_kbhit()) {
@@ -116,20 +136,23 @@ int main() {
 		for (int i = 0; i < listEnemy->longitud(); i++) {
 			if (Colisionar(p, listEnemy->obtenerPos(i))) {//si colisionan
 				comido = true;
-				listEnemy->obtenerPos(i)->SetX(0);
-				listEnemy->obtenerPos(i)->SetY(0);
-				listEnemy->obtenerPos(i)->SetEstado(false);//cambia a muerto
-
-				cEnemy->Enqueue(listEnemy->obtenerPos(i));//enviados a la cola de fantasmas eliminados
-				vidas->pop();// QUITANDO VIDAS CUANDO COLISIONAN
-				system("cls");//LIMPIAR MAPA
-				//// MAP
-				d->Gotoxy(0, 0);//POSICION PARA DIBUJAR MAPA DE NUEVO
-				map->DrawMap(map->GetRows(), map->GetColumns());//DIBUJAR MAPA
-				//// PLAYER
-				p->SetX(1);
-				p->SetY(1);
-				p->DrawCharacter();
+				if (!cEnemy->IsFull()) {
+					listEnemy->obtenerPos(i)->SetX(0);
+					listEnemy->obtenerPos(i)->SetY(0);
+					listEnemy->obtenerPos(i)->SetEstado(false);//cambia a muerto
+					cEnemy->Enqueue(listEnemy->obtenerPos(i));//enviados a la cola de fantasmas eliminados
+				}
+				else {
+					vidas->pop();// QUITANDO VIDAS CUANDO COLISIONAN
+					system("cls");//LIMPIAR MAPA
+					//// MAP
+					d->Gotoxy(0, 0);//POSICION PARA DIBUJAR MAPA DE NUEVO
+					map->DrawMap(map->GetRows(), map->GetColumns());//DIBUJAR MAPA
+					//// PLAYER
+					p->SetX(1);
+					p->SetY(1);
+					p->DrawCharacter();
+				}
 				//// MENU
 				Menu(map, d, vidas);
 			}
@@ -138,7 +161,7 @@ int main() {
 		}
 		if (comido == true) {
 			for (int i = 0; i < cEnemy->Size(); i++) {
-				d->Gotoxy(i+2,map->GetRows()+1);
+				d->Gotoxy(1+i,map->GetRows()-2);
 				d->SetColor(cEnemy->GetElementPos(i)->GetColorFigure());
 				cout << cEnemy->GetElementPos(i)->GetFigure() << "  ";
 			}

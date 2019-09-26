@@ -72,8 +72,11 @@ void Map::DrawMap2(int rows, int columns) {
 		DrawMap2(rows, columns - 1);
 		switch (matrix[rows][columns])
 		{
-		case 0: cout << " "; break;
-		case 1: SetColor(15); cout << char(219); break;
+		case 0: cout << " "; break; // NADA
+		case 1: SetColor(15); cout << char(219); break; // PARED
+		case 2: SetColor(4); cout << char(219); break; // SALIDA DE ENEMIGOS
+		case 8: SetColor(7); cout << char(219); break; // VICTORIA
+		case 9: SetColor(9); cout << char(219); break; // VICTORIA
 		default:
 			break;
 		}

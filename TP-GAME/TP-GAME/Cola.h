@@ -11,8 +11,9 @@ private:
 	Node* head;
 	Node* tail;
 	int lenght;
+	int max_lenght;
 public:
-	Cola(Node* head = nullptr, Node* tail = nullptr, int lenght = 0) :head(head), tail(tail), lenght(0) {}
+	Cola(Node* head = nullptr, Node* tail = nullptr, int lenght = 0,int max_lenght = 50) :head(head), tail(tail), lenght(0), max_lenght(50){}
 	~Cola() {
 		while (head != nullptr) {
 			Node* aux = head;
@@ -21,17 +22,22 @@ public:
 		}
 	}
 	bool IsEmpty() {return lenght == 0;}
+	bool IsFull() {
+		return lenght == max_lenght;
+	}
 	void Enqueue(T* element) {
-		Node* aux = new Node(element,nullptr);
-		if (IsEmpty()){
-			head = aux;
-			tail = aux;
+		if (!IsFull()) {
+			Node* aux = new Node(element, nullptr);
+			if (IsEmpty()) {
+				head = aux;
+				tail = aux;
+			}
+			else {
+				tail->next = aux;
+				tail = aux;
+			}
+			lenght++;
 		}
-		else {
-			tail->next = aux;
-			tail = aux;
-		}
-		lenght++;
 	}
 	T* Dequeue() {
 		if (IsEmpty())
@@ -58,4 +64,8 @@ public:
 		}
 	}
 	int Size() { return lenght; }
+	void SetMaxLength(int max_lenght) {
+		this->max_lenght = max_lenght;
+	}
+	int GetMaxLength() { return max_lenght; };
 };
