@@ -124,7 +124,7 @@ int main() {
 	//IMPLEMENTANDO VIDAS
 	pilaNumeroVidas<char>* vidas = new pilaNumeroVidas<char>();
 	for (int i = 0; i < 3; i++) { // EL JUGADOR SIEMPRE INICIA CON 3 VIDAS
-		vidas->push(p->GetFigure());
+		vidas->pushVidas(p->GetFigure());
 	}
 	
 	Menu(map, d,vidas);
@@ -143,7 +143,7 @@ int main() {
 					cEnemy->Enqueue(listEnemy->obtenerPos(i));//enviados a la cola de fantasmas eliminados
 				}
 				else {
-					vidas->pop();// QUITANDO VIDAS CUANDO COLISIONAN
+					vidas->popVidas();// QUITANDO VIDAS CUANDO COLISIONAN
 					system("cls");//LIMPIAR MAPA
 					//// MAP
 					d->Gotoxy(0, 0);//POSICION PARA DIBUJAR MAPA DE NUEVO

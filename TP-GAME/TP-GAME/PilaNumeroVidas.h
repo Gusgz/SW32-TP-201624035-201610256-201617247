@@ -26,7 +26,7 @@ public:
 		return _top == nullptr;
 	}
 
-	void push(T elem) {
+	void pushVidas(T elem) {
 		_top = new Node(elem, _top);
 		++len;
 	}
@@ -38,7 +38,7 @@ public:
 		}
 	}
 
-	void pop() {
+	void popVidas() {
 		if (!is_empty()) {
 			Node* aux = _top;
 			_top = _top->next;
@@ -47,7 +47,7 @@ public:
 		}
 	}
 
-	T top() {
+	T topVidas() {
 		if (!is_empty()) {
 			return _top->elem;
 		}
@@ -64,8 +64,11 @@ public:
 			cout << "no se pudo guardar en el archivo" << endl;
 		}
 		string linea;
-		for(int i=0;i<this->tamaño();i++)
-		archivo << "Numero de vidas : "<<top()<<",";
+		archivo << "Numero de vidas :";
+		for (int i = 0; i < this->tamaño(); i++)
+		{
+			archivo << topVidas() << ",";
+		}
 		archivo.close();
 	}
 
