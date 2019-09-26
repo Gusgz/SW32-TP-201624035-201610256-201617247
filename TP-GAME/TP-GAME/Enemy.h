@@ -7,6 +7,7 @@ class Enemy :public Character {
 private:
 	double move;
 	bool estado;
+	int daño;
 public:
 	// CONSTRUCTORES
 	Enemy();
@@ -17,8 +18,10 @@ public:
 	void Dead();
 	// GET
 	bool GetEstado();
+	int GetDaño() { return daño; }
 	// SET
 	void SetEstado(bool estado);
+	void SetDaño(int daño) { this->daño = daño; }
 };
 // CONSTRUCTORES
 Enemy::Enemy() {

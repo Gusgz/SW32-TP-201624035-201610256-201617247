@@ -68,7 +68,7 @@ void Menu() {
 	cout << "[C] CARGAR PARTIDA";
 	// ------------------------------
 	d->Gotoxy(map->GetColumns() + cont_x, cont_y++);
-	cout << "[ESPACIO] LIBERAR ENEMIGOS";
+	cout << "[ESPACIO] LIBERAR ENEMIGOS (MIN 5)";
 	// ------------------------------
 	d->Gotoxy(map->GetColumns() + cont_x, cont_y++);
 	cout << "[ESCAPE] SALIR DEL JUEGO";
@@ -80,7 +80,7 @@ void Menu() {
 	cout << "VIDAS: "; vidas->Show();
 	// ------------------------------
 	d->Gotoxy(map->GetColumns() + cont_x, cont_y++);
-	cout << "ENEMIGOS MUERTOS: "; cout << colaEnemy->Size();
+	cout << "ENEMIGOS MUERTOS (MAX 7): "; cout << colaEnemy->Size();
 
 }
 void KeyPressed(int o) {
@@ -93,6 +93,8 @@ void KeyPressed(int o) {
 			if (colaEnemy->Size()>5) {
 				lstEnemy->agregaInicial(colaEnemy->Dequeue());
 				lstEnemy->obtenerInicial()->SetEstado(true);
+				// PARA OBSERVAR COLA
+				//lstEnemy->obtenerInicial()->SetColorFigure(4);
 				int rand_pos = rand() % 4;
 				switch (rand_pos)
 				{
@@ -109,12 +111,16 @@ void KeyPressed(int o) {
 					pos_y = ry_2;
 					break;
 				default:
+					pos_x = 1;
+					pos_y = map->GetRows() - 4;
 					break;
 				}
 				lstEnemy->obtenerInicial()->SetX(pos_x);
 				lstEnemy->obtenerInicial()->SetY(pos_y);
 				lstEnemy->obtenerInicial()->DrawCharacter();
 				VerColaEnemigos();
+				
+			Menu();
 			}
 			break;
 		case GUARDAR:
@@ -203,6 +209,7 @@ int main() {
 					p->SetY(1);
 					p->DrawCharacter();
 					vidas->popVidas();
+					VerColaEnemigos();
 
 				}
 				Menu();
