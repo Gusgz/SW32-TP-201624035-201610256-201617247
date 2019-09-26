@@ -17,6 +17,7 @@
 #define RIGHT 77
 #define LEFT 75
 #define ESCAPE 27
+#define ESPACE 32
 #define ENTER 13
 #define GUARDAR 'g'
 #define CARGAR 'c'
@@ -27,7 +28,13 @@ bool comido = false;
 int option = 0;
 int cont_cola = 0;
 int o = 0;
-
+int pos_x = 0;
+int pos_y = 0;
+short m = 0;
+int rx_2 = 27;
+int ry_2 = 13;
+int rx_3 = 42;
+int ry_3 = 18;
 Design* d = new Design();
 Map* map = new Map();
 Player* p = new Player(1, 1, char(184), 15, map);
@@ -62,7 +69,10 @@ void Menu() {
 	cout << "[C] CARGAR PARTIDA";
 	// ------------------------------
 	d->Gotoxy(map->GetColumns() + cont_x, cont_y++);
-	cout << "[ESC] SALIR DEL JUEGO";
+	cout << "[ESPACIO] LIBERAR ENEMIGOS";
+	// ------------------------------
+	d->Gotoxy(map->GetColumns() + cont_x, cont_y++);
+	cout << "[ESCAPE] SALIR DEL JUEGO";
 	// ------------------------------
 	d->Gotoxy(map->GetColumns() + cont_x, cont_y++);
 	cout << "------------------------------";
@@ -79,6 +89,35 @@ void KeyPressed(int o) {
 		{
 		case UP: case DOWN: case LEFT: case RIGHT:
 			p->MovePlayer(o);
+			break;
+		case ESPACE:
+			if (colaEnemy->Size()>5) {
+				lstEnemy->agregaInicial(colaEnemy->Dequeue());
+				lstEnemy->obtenerInicial()->SetEstado(true);
+				int rand_pos = rand() % 4;
+				switch (rand_pos)
+				{
+				case 0:
+					pos_x = 1;
+					pos_y = map->GetRows() - 4;
+					break;
+				case 1:
+					pos_x = rx_2;
+					pos_y = ry_2;
+					break;
+				case 2:
+					pos_x = rx_3;
+					pos_y = ry_2;
+					break;
+				default:
+					break;
+				}
+				lstEnemy->obtenerInicial()->SetX(pos_x);
+				lstEnemy->obtenerInicial()->SetY(pos_y);
+				lstEnemy->obtenerInicial()->DrawCharacter();
+				VerColaEnemigos();
+				m = 1;
+			}
 			break;
 		case GUARDAR:
 			// MAP
@@ -129,13 +168,12 @@ int main() {
 		}
 	}
 	// ------------------------------ COLA DE ENEMIGOS
-	colaEnemy->SetMaxLength(10);
+	colaEnemy->SetMaxLength(7);
 	// ------------------------------ VIDAS
 	for (int i = 0; i < 3; i++) {
 		vidas->pushVidas(p->GetFigure());
 	}
 	// MENU
-	short m = 0;
 	Menu();
 	// ------------------------------ JUEGO
 	while ((!vidas->is_empty()) && !((p->GetX() == 47 && p->GetY() == 23) || (p->GetX() == 48 && p->GetY() == 22))) {

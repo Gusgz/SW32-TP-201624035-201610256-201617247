@@ -74,7 +74,7 @@ void Map::DrawMap2(int rows, int columns) {
 		{
 		case 0: cout << " "; break; // NADA
 		case 1: SetColor(15); cout << char(219); break; // PARED
-		case 2: SetColor(4); cout << char(219); break; // SALIDA DE ENEMIGOS
+		case 2: SetColor(10); cout << char(219); break; // SALIDA DE ENEMIGOS
 		case 8: SetColor(7); cout << char(219); break; // VICTORIA
 		case 9: SetColor(9); cout << char(219); break; // VICTORIA
 		default:

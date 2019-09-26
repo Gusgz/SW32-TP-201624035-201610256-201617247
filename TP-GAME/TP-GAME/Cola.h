@@ -40,9 +40,7 @@ public:
 		}
 	}
 	T* Dequeue() {
-		if (IsEmpty())
-			return NULL;
-		else {
+		if (!IsEmpty()){
 			Node* aux = head;
 			head = head->next;
 			lenght--;
@@ -63,7 +61,9 @@ public:
 			aux = aux->next;
 		}
 	}
-	int Size() { return lenght; }
+	int Size() { 
+		return lenght; 
+	}
 	void SetMaxLength(int max_lenght) {
 		this->max_lenght = max_lenght;
 	}

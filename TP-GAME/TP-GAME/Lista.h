@@ -67,7 +67,9 @@ public:
 		delete fin;
 		lon--;
 	}
-	T obtenerInicial();
+	T* obtenerInicial() {
+		return ini->elem;
+	}
 	T* obtenerPos(uint pos) {//retorna elemento en posicion enviada
 		if (pos >= 0 && pos < lon) {
 			Nodo* aux = ini;
@@ -80,7 +82,6 @@ public:
 			return nullptr;
 		}
 	}
-	T obtenerFinal();
 	T buscar(T elem);
 };
 // Nodo
