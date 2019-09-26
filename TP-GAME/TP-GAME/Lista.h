@@ -38,8 +38,25 @@ public:
 		Nodo* aux = ini;
 		ini = aux->sig;
 		delete aux;
+		lon--;
 	}
-	void eliminaPos(uint pos);
+	void eliminaPos(uint pos) {
+		if (pos == 0)
+			eliminaInicial();
+		else
+			if (pos == lon)
+				eliminaFinal();
+			else
+			{
+				Nodo* aux = ini;
+				for (int i = 0; i < pos-1; i++)
+					aux = aux->sig;
+				Nodo* aux2 = aux->sig;
+				aux->sig = aux2->sig;
+				delete aux2;
+				lon--;
+			}
+	}
 	void eliminaFinal() {
 		Nodo* iterador = ini;
 		Nodo* fin;
@@ -48,6 +65,7 @@ public:
 		}
 		fin = iterador->sig;
 		delete fin;
+		lon--;
 	}
 	T obtenerInicial();
 	T* obtenerPos(uint pos) {//retorna elemento en posicion enviada

@@ -28,14 +28,15 @@ public:
 
 	void pushVidas(T elem) {
 		_top = new Node(elem, _top);
-		++len;
+		len++;
 	}
 	void Show() {
 		Node* aux = _top;
-		for (int i = 0; i < tamaño(); i++) {
+		for (int i = 0; i < len; i++) {
 			cout << aux->elem << " ";
-			aux= aux->next;
+			aux = aux->next;
 		}
+		delete aux;
 	}
 
 	void popVidas() {
@@ -43,7 +44,7 @@ public:
 			Node* aux = _top;
 			_top = _top->next;
 			delete aux;
-			--len;
+			len--;
 		}
 	}
 
@@ -55,7 +56,7 @@ public:
 	}
 
 	int tamaño() {
-		return this->len;
+		return len;
 	}
 
 	void guardarNumeroVidas() {
