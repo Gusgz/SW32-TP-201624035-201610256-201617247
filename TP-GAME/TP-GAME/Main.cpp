@@ -131,6 +131,9 @@ void KeyPressed(int o) {
 			vidas->guardarNumeroVidas();
 			// PLAYER
 			p->SavePosition();
+			//COLA
+
+			colaEnemy->guardarEnemigos();
 			break;
 		case CARGAR:
 			// PLAYER
@@ -149,6 +152,8 @@ void KeyPressed(int o) {
 
 		case 'v':
 			vidas->pushVidas(p->GetFigure());
+			Menu();
+
 		default:
 			break;
 		}

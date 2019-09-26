@@ -68,4 +68,30 @@ public:
 		this->max_lenght = max_lenght;
 	}
 	int GetMaxLength() { return max_lenght; };
+
+	void guardarEnemigos() {
+		ofstream archivo("cEne.txt");
+		if (!archivo.is_open()) {
+			cout << "no se pudo guardar en el archivo" << endl;
+		}
+		else {
+			for (int i = 0; i < lenght; i++)
+			{
+				archivo << GetElementPos(i)->GetX() << "," << GetElementPos(i)->GetY() << endl;
+			}
+		}
+
+		archivo.close();
+	}
+
+	void mostrarEnemigos() {
+		ifstream archivo("cEne.txt");
+		if (!archivo.is_open()) {
+			cout << "no se pudo abrir el archivo" << endl;
+		}
+		string linea;
+		while (getline(archivo, linea, ',')) {
+			cout << linea;
+		}
+	}
 };

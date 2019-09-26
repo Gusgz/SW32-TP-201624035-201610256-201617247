@@ -109,6 +109,7 @@ public:
 
 	}
 	T buscar(T elem);
+
 };
 // Nodo
 template <typename T>
