@@ -30,7 +30,6 @@ int cont_cola = 0;
 int o = 0;
 int pos_x = 0;
 int pos_y = 0;
-short m = 0;
 int rx_2 = 27;
 int ry_2 = 13;
 int rx_3 = 42;
@@ -60,7 +59,7 @@ bool Colisionar(Player* p, Enemy* e) {
 void Menu() {
 	int cont_x = 2;
 	int cont_y = 2;
-	d->SetColor(15);
+	d->SetColor(14);
 	// ------------------------------
 	d->Gotoxy(map->GetColumns() + cont_x, cont_y++);
 	cout << "[G] GUARDAR PARTIDA";
@@ -78,7 +77,7 @@ void Menu() {
 	cout << "------------------------------";
 	// ------------------------------
 	d->Gotoxy(map->GetColumns() + cont_x, cont_y++);
-	cout << "VIDAS: "; vidas->Show(); cout << vidas->tamaño();
+	cout << "VIDAS: "; vidas->Show();
 	// ------------------------------
 	d->Gotoxy(map->GetColumns() + cont_x, cont_y++);
 	cout << "ENEMIGOS MUERTOS: "; cout << colaEnemy->Size();
@@ -116,7 +115,6 @@ void KeyPressed(int o) {
 				lstEnemy->obtenerInicial()->SetY(pos_y);
 				lstEnemy->obtenerInicial()->DrawCharacter();
 				VerColaEnemigos();
-				m = 1;
 			}
 			break;
 		case GUARDAR:
@@ -163,7 +161,7 @@ int main() {
 					rand_color = 8 + rand() % 2;
 					Enemy* aux = new Enemy(j, i, char(223), rand_color, map);
 					aux->DrawCharacter();
-					lstEnemy->agregaInicial(aux);
+					lstEnemy->agregaInicial(aux);//AGREGA ENEMIGOS
 				}
 		}
 	}
@@ -186,7 +184,7 @@ int main() {
 		for (int i = 0; i < lstEnemy->longitud(); i++) {
 			// ------------------------------ SI COLISIONA
 			if (Colisionar(p, lstEnemy->obtenerPos(i))) {
-				m = 1;
+			/*	m = 1;*/
 				if (!colaEnemy->IsFull()) {
 					lstEnemy->obtenerPos(i)->SetX(0);
 					lstEnemy->obtenerPos(i)->SetY(0);
@@ -197,23 +195,23 @@ int main() {
 					VerColaEnemigos();
 				}
 				else {
+					system("cls");//LIMPIAR MAPA
+					d->Gotoxy(0, 0);//POSICION PARA DIBUJAR MAPA DE NUEVO
+					map->DrawMap(map->GetRows(), map->GetColumns());//DIBUJAR MAPA
 					p->EraseCharacter();
 					p->SetX(1);
 					p->SetY(1);
 					p->DrawCharacter();
 					vidas->popVidas();
+
 				}
+				Menu();
 			}
 			// ------------------------------ SI NO COLISIONA
 			else {
-				lstEnemy->obtenerPos(i)->MoveEnemy();
+				lstEnemy->obtenerPos(i)->MoveEnemy();//MUEVE A LOS ENEMIGOS DE LA LISTA
 			}
 		}
-		if (m == 1) {
-			Menu();
-			m = 0;
-		}
-		
 	}
 	// ------------------------------ FIN JUEGO
 

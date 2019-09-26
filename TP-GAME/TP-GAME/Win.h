@@ -59,8 +59,8 @@ void Win::DrawWin2(int rows, int columns) {
 		switch (matrix[rows][columns])
 		{
 		case 0: cout << " "; break;
-		case 1: SetColor(4); cout << char(219); break;
-		case 3:SetColor(2); cout << char(219); break;
+		case 1: SetColor(15); cout << char(219); break;
+		case 3:SetColor(3); cout << char(219); break;
 		default:
 			break;
 		}
