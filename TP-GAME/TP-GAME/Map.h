@@ -73,7 +73,7 @@ void Map::DrawMap2(int rows, int columns) {
 		switch (matrix[rows][columns])
 		{
 		case 0: cout << " "; break;
-		case 1: SetColor(1); cout << char(219); break;
+		case 1: SetColor(15); cout << char(219); break;
 		default:
 			break;
 		}
@@ -82,8 +82,10 @@ void Map::DrawMap2(int rows, int columns) {
 void Map::DrawMap(int rows, int columns) {
 	if (rows >= 0) {
 		DrawMap(rows - 1, columns);
-		DrawMap2(rows, columns - 1);
-		cout << endl;
+		if (rows < 25) {
+			DrawMap2(rows, columns - 1);
+			cout << endl;
+		}
 	}
 }
 

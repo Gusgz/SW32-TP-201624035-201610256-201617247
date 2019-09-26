@@ -30,6 +30,13 @@ public:
 		_top = new Node(elem, _top);
 		++len;
 	}
+	void Show() {
+		Node* aux = _top;
+		for (int i = 0; i < tamaño(); i++) {
+			cout << aux->elem << " ";
+			aux= aux->next;
+		}
+	}
 
 	void pop() {
 		if (!is_empty()) {
@@ -52,7 +59,7 @@ public:
 	}
 
 	void guardarNumeroVidas() {
-		ofstream archivo("Numero de vidas.text");
+		ofstream archivo("vidas.text");
 		if (!archivo.is_open()) {
 			cout << "no se pudo guardar en el archivo" << endl;
 		}
@@ -63,7 +70,7 @@ public:
 	}
 
 	void mostrarNumeroVidas() {
-		ifstream archivo("Numero de vidas.text");
+		ifstream archivo("vidas.text");
 		if (!archivo.is_open()) {
 			cout << "no se pudo abrir el archivo" << endl;
 		}

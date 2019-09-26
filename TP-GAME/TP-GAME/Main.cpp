@@ -39,12 +39,9 @@ void Menu(Map* map, Design* d,pilaNumeroVidas<char>* vidas) {
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
 
-	cout << "NUMEROS DE VIDAS : " << endl;
+	cout << "NUMERO DE VIDAS : " << endl;
 	d->Gotoxy(map->GetColumns() + 5, cont_y++);
-	for(int i=0;i<vidas->tamaño();i++)
-	cout << vidas->top()<<" " ;// MOSTRANDO VIDAS 
-
-
+	vidas->Show();//Mostrando vidas
 
 }
 void KeyPressed(Map* map, Player* p, Design* d, int o,pilaNumeroVidas<char>* vidas) {
@@ -71,7 +68,7 @@ void KeyPressed(Map* map, Player* p, Design* d, int o,pilaNumeroVidas<char>* vid
 			p->LoadPosition();
 			p->DrawCharacter();
 			//VIDAS
-			//vidas->mostrarNumeroVidas();
+		/*	vidas->mostrarNumeroVidas();*/
 			// MENU
 			Menu(map, d,vidas);
 			break;
@@ -83,19 +80,14 @@ void KeyPressed(Map* map, Player* p, Design* d, int o,pilaNumeroVidas<char>* vid
 		}
 }
 
-
-
-
-
-
-
 int main() {
-	bool menu = true; bool comido = false;
+	bool comido = false;
 	Map* map = new Map();
 	map->LoadMap();
 	map->DrawMap(map->GetRows(), map->GetColumns());
-	Design* d = new Design(); // Gotoxy SetColor
-	Player* p = new Player(1, 1,'P',15,map,5);
+	Design* d = new Design(); // Gotoxy como apoyo en coord,diseño y cursor
+	d->HideCursor();
+	Player* p = new Player(1, 1,char(184),2,map);
 	p->DrawCharacter();
 	 //LISTA DE ENEMIGOS RECIEN CREADOS
 	Lista<Enemy>* listEnemy = new Lista<Enemy>();
@@ -112,12 +104,8 @@ int main() {
 	//IMPLEMENTANDO VIDAS
 	pilaNumeroVidas<char>* vidas = new pilaNumeroVidas<char>();
 	for (int i = 0; i < 3; i++) { // EL JUGADOR SIEMPRE INICIA CON 3 VIDAS
-		vidas->push('C');
+		vidas->push(p->GetFigure());
 	}
-
-
-
-
 
 	Menu(map, d,vidas);
 	while (1) {
@@ -134,14 +122,23 @@ int main() {
 
 				cEnemy->Enqueue(listEnemy->obtenerPos(i));//enviados a la cola de fantasmas eliminados
 				vidas->pop();// QUITANDO VIDAS CUANDO COLISIONAN
-				d->Gotoxy(2, map->GetRows() + 2);
+				system("cls");//LIMPIAR MAPA
+				//// MAP
+				d->Gotoxy(0, 0);//POSICION PARA DIBUJAR MAPA DE NUEVO
+				map->DrawMap(map->GetRows(), map->GetColumns());//DIBUJAR MAPA
+				//// PLAYER
+				p->SetX(1);
+				p->SetY(1);
+				p->DrawCharacter();
+				//// MENU
+				Menu(map, d, vidas);
 			}
 			else
 				listEnemy->obtenerPos(i)->MoveEnemy();
 		}
 		if (comido == true) {
 			for (int i = 0; i < cEnemy->Size(); i++) {
-				d->Gotoxy(i+2,map->GetRows()+3);
+				d->Gotoxy(i+2,map->GetRows()+1);
 				d->SetColor(cEnemy->GetElementPos(i)->GetColorFigure());
 				cout << cEnemy->GetElementPos(i)->GetFigure() << "  ";
 			}

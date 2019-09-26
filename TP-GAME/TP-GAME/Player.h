@@ -12,7 +12,7 @@ private:
 public:
 	// CONSTRUCTORES
 	Player();
-	Player(int x, int y, char figure, int color, Map* map, int vida);
+	Player(int x, int y, char figure, int color, Map* map);
 	~Player();
 	// METODOS
 	void MovePlayer(int o);
@@ -24,15 +24,13 @@ public:
 	}
 	// GET
 	int GetVida();
-	// SET
-	void SetVida(int vida);
 };
 // CONSTRUCTORES
 Player::Player() {
 	Character::Character();
 	vida = 0;
 }
-Player::Player(int x, int y, char figure, int color, Map* map, int vida) : Character(x, y, figure, color,map) {
+Player::Player(int x, int y, char figure, int color, Map* map) : Character(x, y, figure, color,map) {
 	this->vida = vida;
 }
 Player::~Player() {
@@ -71,8 +69,4 @@ void Player::MovePlayer(int o) {
 // GET
 int Player::GetVida() {
 	return vida;
-}
-// SET
-void Player::SetVida(int vida) {
-	this->vida = vida;
 }
