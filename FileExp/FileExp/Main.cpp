@@ -1,57 +1,60 @@
-#include <iostream>
+#define _CRT_SECURE_NO_WARNINGS // N
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+
+#include <iostream>
 #include <experimental/filesystem>
 #include "Tree.h"
+#include <time.h> // N
+#include <sstream> // N
+#include "File.h"
 
 using namespace std;
 using namespace std::experimental::filesystem;
 
 typedef unsigned long ulong;
 
-typedef Tree<path, string> TreeStr;
-typedef Tree<path, ulong> TreeInt;
+typedef Tree<string, string> TreeStr;
+typedef Tree<ulong, ulong> TreeLong;
+
 
 int main()
 {
-	path p = current_path();//devuelve ruta actual
-	auto compName = [](path a) { return a.stem().string(); };//Devuelve el nombre
-	auto compExtension = [](path e) {return e.extension().string(); };//Devuelve la extension
-	auto compSize = [](path s) {return file_size(s); };//Devuelve el tamaño
-	TreeStr* nameTree = new TreeStr(compName);//Arbol de nombre
-	TreeStr* extensionTree = new TreeStr(compExtension);//Arbol de extension
-	TreeInt* sizeTree = new TreeInt(compSize);//Arbol de tamaño
-	cout << "Agregando archivos al arbol..." << endl;
-	for (const auto& entry : directory_iterator("Test")) {
-		nameTree->add(entry.path());//archivos de Test agregandolos al arbol(nombres)
+	// Lambda que compara los atributos para ingresarlos en el arbol
+	auto compName = [](string a) { return a; };
+	auto compExtension = [](string e) {return e; };
+	auto compSize = [](ulong s) {return s; };
+	auto compDate = [](string d) {return d; };
+	// Declaracion de los arboles y sus respectivas comparaciones
+	TreeStr* nameTree = new TreeStr(compName);
+	TreeStr* extensionTree = new TreeStr(compExtension);
+	TreeLong* sizeTree = new TreeLong(compSize);
+	TreeStr* dateTree = new TreeStr(compDate);
+	// Busquedad de los archivos en una determinada ruta
+	for (const auto& entry : recursive_directory_iterator("Test")) {
+		File* file = new File(entry.path());
+		nameTree->add(file->GetName());
+		extensionTree->add(file->GetExtension());
+		sizeTree->add(file->GetSize());
+		dateTree->add(file->GetDate());
+		delete file;
 	}
-	for (const auto& entry : directory_iterator("Test")) {
-		extensionTree->add(entry.path());//archivos de Test agregandolos al arbol(extensiones)
-	}
-	for (const auto& entry : directory_iterator("Test")) {
-		sizeTree->add(entry.path());//archivos de Test agregandolos al arbol(extensiones)
-	}
-	cout << "Archivos agregados!" << endl;
-	auto showName = [](path a) {
-		cout << "Nombre\t " << a.stem().string() << endl;
-	};
-	auto showExtension = [](path e) {
-		cout << "Extension\t " << e.extension().string() << endl;
-	};
-	auto showSize = [](path e) {
-		cout << "Tamanio\t " << file_size(e) << endl;
-	};
-	cout << "Mostrando arbol(Nombres):" << endl;
+	// Lambda que muestra el valor indicado
+	auto showName = [](string a) { cout << a << endl; };
+	auto showExtension = [](string e) { cout << e << endl; };
+	auto showSize = [](ulong e) { cout << e << " bytes" << endl; };
+	auto showDate = [](string d) { cout << d << endl; };
+	// Se muestra en consola
+	cout << "Name:" << endl;
 	nameTree->inorder(showName);
 	cout << "------------------------------" << endl;
-
-	cout << endl;
-	cout << "Mostrando arbol(Extensiones):" << endl;
-	nameTree->inorder(showExtension);
+	cout << "Extension:" << endl;
+	extensionTree->inorder(showExtension);
 	cout << "------------------------------" << endl;
-
-	cout << endl;
-	cout << "Mostrando arbol(Tamanios):" << endl;
-	nameTree->inorder(showSize);
+	cout << "Size:" << endl;
+	sizeTree->inorder(showSize);
+	cout << "------------------------------" << endl;
+	cout << "Date:" << endl;
+	dateTree->inorder(showDate);
 	cout << "------------------------------" << endl;
 	std::cin.get();
 	return 0;
