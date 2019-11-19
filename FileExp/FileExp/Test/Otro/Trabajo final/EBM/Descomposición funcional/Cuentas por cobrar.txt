@@ -1,6 +1,0 @@
-cxc comerciales,
-cxc venta a crédito,
-cxc empleado, cuando se le da un anticipo o prestamo al empleado
-cxc empleado, cuando falta dinero en caja
-anticipo a proveedor, el prov solicita dinero antes de efectuar la compra
-cxc seguro o reclamo, cuando se malogra una pc (tiempo de reclamo hasta cobro)
