@@ -114,6 +114,19 @@ int main()
 		}
 	};
 
+	long NumeroBuscar = 81;
+	auto BuscarElem = [&](File* b) {
+		if (b != nullptr) {
+			if (b->GetSize() == NumeroBuscar) {
+				cout << b->GetSize() << endl;
+			}
+		}
+		else {
+			cout << "Not found\n";
+		}
+	};
+
+
 
 	//auto showExtension = [](string e) { cout << e << endl; };
 	//auto showSize = [](ulong e) { cout << e << " bytes" << endl; };
@@ -136,7 +149,9 @@ int main()
 	sizeTree->inorder(showSize);
 	
 	cout << "Elemento Mayor :" << sizeTree->ElemMayor()->GetSize(); cout << endl;
-	cout << "Elemento Menor :" << sizeTree->ElemMenor()->GetSize();
+	cout << "Elemento Menor :" << sizeTree->ElemMenor()->GetSize(); cout << endl;
+	cout << "Elementos a buscar :"<< endl;
+	sizeTree->BuscarElem(BuscarElem);
 	/*
 	cout << "------------------------------" << endl;
 	cout << "Date:" << endl;

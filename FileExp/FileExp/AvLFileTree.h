@@ -82,16 +82,27 @@ class AVLFILETREE {
 		if (node == nullptr) {
 			return NONE;
 		}
-		else if (val == key(node->elem)) {
-			return node->elem;
-		}
-		else if (val < key(node->elem)) {
-			return find(node->left, val);
-		}
 		else {
-			return find(node->right, val);
+			while (node != nullptr) {
+				find(node->left, val);
+				if (val == key(node->elem)) {
+					return node->elem;
+				}
+				find(node->right, val);
+			}
+		}
+
+		return NONE;
+	}
+
+	void BuscarElem(Node* node, function<void(T)> busc) {
+		if (node != nullptr) {
+			BuscarElem(node->left, busc);
+			busc(node->elem);
+			BuscarElem(node->right, busc);
 		}
 	}
+
 
 
 
@@ -214,7 +225,10 @@ public:
 	}
 
 
-
+	//buscar elemento
+	void BuscarElem(function<void(T)> proc) {
+		BuscarElem(root, proc);
+	}
 
 
 };
