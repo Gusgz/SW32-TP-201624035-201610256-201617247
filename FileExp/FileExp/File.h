@@ -14,8 +14,24 @@ private:
 	ulong size;
 	string date;
 public:
-	File(path file) {
-		this->name = file.stem().string();
+	File(path file) { 
+		if (!(file.stem().string() == ""))
+			this->name = file.stem().string();
+		else
+			this->name = "###";
+
+		//if (is_regular_file(file)) {
+		//	this->extension = file.extension().string();
+		//	this->size = file_size(file);
+		//}
+		//else
+		//{
+		//	if (is_directory(file)) {
+		//		this->extension = ".dir";
+		//		this->size = 0;
+		//	}
+		//}
+
 		if (!is_directory(file)) {
 			this->extension = file.extension().string();
 			this->size = file_size(file);

@@ -24,8 +24,8 @@ typedef unsigned long ulong;
 int main()
 {
 	typedef AVLFILETREE<File*, string, nullptr> TreeStr;
-	typedef AVLFILETREE<File*, ulong,nullptr> TreeLong;
-	
+	typedef AVLFILETREE<File*, ulong, nullptr> TreeLong;
+
 
 
 	// Lambda que compara los atributos para ingresarlos en el arbol
@@ -39,13 +39,14 @@ int main()
 	TreeLong* sizeTree = new TreeLong(compSize);
 	//TreeStr* dateTree = new TreeStr(compDate);
 	// Busquedad de los archivos en una determinada ruta
-	for (const auto& entry : recursive_directory_iterator("Test")) {
-		File* file = new File(entry.path());
-		nameTree->add(file);
-		//extensionTree->add(file->GetExtension());
-		sizeTree->add(file);
-		//dateTree->add(file->GetDate());
-		
+	for (const auto& entry : recursive_directory_iterator("Test/folder")) {
+		if (is_regular_file(entry.path()) || is_directory(entry.path())) {
+			File* file = new File(entry.path());
+			nameTree->add(file);
+			sizeTree->add(file);
+			//extensionTree->add(file->GetExtension());
+			//dateTree->add(file->GetDate());
+		}
 	}
 	// Lambda que muestra el valor indicado
 	auto showName = [](File* a) { 
@@ -57,8 +58,6 @@ int main()
 		}
 	
 	};
-
-
 	auto showSize = [](File* s) {//Lambda que muestra los tamaños de archivos
 		if (s != nullptr) {
 			cout <<s->GetSize()  << endl;
@@ -68,11 +67,8 @@ int main()
 		}
 
 	};
-
-
-
-
-	string textoContiene = "texto";// hallando el elemnto contiene
+	// ---------- contiene palabra
+	string textoContiene = "a";
 	auto Contiene = [&](File* a) {
 		if (a != nullptr) {
 			size_t found = a->GetName().find(textoContiene);
@@ -85,35 +81,29 @@ int main()
 			cout << "Not found\n";
 		}
 	};
-
-	char textoEmpieza = 's';//Hllando el elemnto empieza con
+	// ---------- empieza palabra
+	char textoEmpieza = 'V';
 	auto EmpiezanCon = [&](File* a) {
 		if (a != nullptr) {
-
-			if (a->GetName().front() == textoEmpieza) {
+			if (a->GetName().front() == textoEmpieza && a->GetName().front() != NULL) {
 				cout << a->GetName() << endl;
 			}
-
 		}
 		else {
 			cout << "Not found\n";
 		}
 	};
-
-	char Textofinaliza = 's';//Hallando elemnto finaliza con 
+	// ---------- finaliza palabra
+	char Textofinaliza = 'a';
 	auto FinalizaCon = [&](File* a) {
 		if (a != nullptr) {
-
-			if (a->GetName().back() == Textofinaliza) {
+			if (a->GetName().back() == Textofinaliza)
 				cout << a->GetName() << endl;
-			}
-
 		}
-		else {
+		else
 			cout << "Not found\n";
-		}
 	};
-
+	// ---------- busca tamaño
 	long NumeroBuscar = 81;
 	auto BuscarElem = [&](File* b) {
 		if (b != nullptr) {
@@ -132,31 +122,45 @@ int main()
 	//auto showSize = [](ulong e) { cout << e << " bytes" << endl; };
 	//auto showDate = [](string d) { cout << d << endl; };
 	// Se muestra en consola
-	cout << "Name:" << endl;
+	cout << "------------------------------" << endl;
+	cout << "Archivos:" << endl;
 	nameTree->inorder(showName);
 	cout << "------------------------------" << endl;
+	cout << "Contiene la palabra [" << textoContiene <<"]"<< endl;
 	nameTree->inorder(Contiene);
 	cout << "------------------------------" << endl;
+	cout << "Empieza con la letra [" << textoEmpieza << "]"<< endl;
 	nameTree->inorder(EmpiezanCon);
 	cout << "------------------------------" << endl;
+	cout << "Finaliza con la letra [" << Textofinaliza << "]"<< endl;
 	nameTree->inorder(FinalizaCon);
 	cout << "------------------------------" << endl;
+
+
 	/*cout << "Extension:" << endl;
 	extensionTree->inorder(showExtension);
 	cout << "------------------------------" << endl;
 	*/
-	cout << "Size:" << endl;
-	sizeTree->inorder(showSize);
-	
-	cout << "Elemento Mayor :" << sizeTree->ElemMayor()->GetSize(); cout << endl;
-	cout << "Elemento Menor :" << sizeTree->ElemMenor()->GetSize(); cout << endl;
-	cout << "Elementos a buscar :"<< endl;
-	sizeTree->BuscarElem(BuscarElem);
+
+
+	// FUNCIONA---
+	//cout << "Size:" << endl;
+	//sizeTree->inorder(showSize);
+	//
+	//cout << "Elemento Mayor :" << sizeTree->ElemMayor()->GetSize(); cout << endl;
+	//cout << "Elemento Menor :" << sizeTree->ElemMenor()->GetSize(); cout << endl;
+	//cout << "Elementos a buscar :"<< endl;
+	//sizeTree->BuscarElem(BuscarElem);
+	// FUNCIONA---
+
+
 	/*
+
 	cout << "------------------------------" << endl;
 	cout << "Date:" << endl;
 	dateTree->inorder(showDate);
 	cout << "------------------------------" << endl;*/
+	cout << "Presione enter para finalizar el programa..." << endl;
 	std::cin.get();
 	return 0;
 }
