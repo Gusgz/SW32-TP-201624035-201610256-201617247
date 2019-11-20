@@ -19,18 +19,6 @@ public:
 		else
 			this->name = "###";
 
-		//if (is_regular_file(file)) {
-		//	this->extension = file.extension().string();
-		//	this->size = file_size(file);
-		//}
-		//else
-		//{
-		//	if (is_directory(file)) {
-		//		this->extension = ".dir";
-		//		this->size = 0;
-		//	}
-		//}
-
 		if (!is_directory(file)) {
 			this->extension = file.extension().string();
 			this->size = file_size(file);

@@ -72,53 +72,19 @@ class AVLFILETREE {
 	//Buscando Elemento igual a
 	T find(Node* node, Comparable val) {
 		if (node == nullptr) {
-			return NONE;
+			cout << "NOT FOUND FILE ";
 		}
-		else {
-			while (node != nullptr) {
-				find(node->left, val);
-				if (val == key(node->elem)) {
-					return node->elem;
-				}
-				find(node->right, val);
-			}
-		}
-
-		return NONE;
-	}
-
-	void BuscarElem(Node* node, function<void(T)> busc) {
-		if (node != nullptr) {
-			BuscarElem(node->left, busc);
-			busc(node->elem);
-			BuscarElem(node->right, busc);
-		}
-	}
-
-
-
-
-	//buscador de palabra 
-	T buscar(Node* node, Comparable val) {
-		size_t found = key(node->elem).find(val);
-		if (node == nullptr) {
-			return NONE;
-		}
-
-		else if (found != string::npos) {
+		else if (val == key(node->elem)) {
 			return node->elem;
 		}
 		else if (val < key(node->elem)) {
-			return buscar(node->left, val);
+			return find(node->left, val);
 		}
-		else {
-			return buscar(node->right, val);
+		else if (val > key(node->elem)) {
+			return find(node->right, val);
 		}
-
-
+	
 	}
-
-
 
 
 
