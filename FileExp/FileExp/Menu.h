@@ -1,5 +1,6 @@
 #pragma once
-
+#define _CRT_SECURE_NO_WARNINGS // N
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #include <iostream>
 #include "File.h"
 #include "AvLFileTree.h"

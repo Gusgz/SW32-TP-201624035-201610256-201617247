@@ -38,13 +38,10 @@ class AVLFILETREE {
 	Node* add(Node* node, T elem) {
 		if (node == nullptr) {
 			node = new Node(elem);
-
 		}
 		else {
 			if (key(elem) < key(node->elem)) {
 				node->left = add(node->left, elem);
-
-
 			}
 			else {
 				node->right = add(node->right, elem);
@@ -56,23 +53,18 @@ class AVLFILETREE {
 	}
 	//Buscando Elemento menor del arbol
 	T ElemMen(Node* auxmenor) {
-		T menor;
-		while (auxmenor->left != nullptr) {
+		while (auxmenor->left != nullptr){
 			auxmenor = auxmenor->left;
-			menor = auxmenor->elem;
-			return menor;
 		}
-
+		return auxmenor->elem;
 	}
 
 	//Buscando Elemento mayor del arbol
 	T ElemMay(Node* auxmayor) {
-		T mayor;
 		while (auxmayor->right != nullptr) {
 			auxmayor = auxmayor->right;
-			mayor = auxmayor->elem;
-			return mayor;
 		}
+		return auxmayor->elem;
 		
 	}
 
