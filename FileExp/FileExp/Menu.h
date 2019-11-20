@@ -151,6 +151,7 @@ public:
 					case 2: {
 				 		cout << "++++++++++++" << endl;
 						cout << "Size:" << endl;
+						
 						//sizeTree->inorder(showSize);
 						sizeTree->Descendente(showSize);//mostrando descendente
 						cout << "\n------------------------" << endl;
@@ -159,8 +160,16 @@ public:
 						ulong NumeroBuscar;
 						cout << "\n------------------------" << endl;
 						cout << "Tamanio a buscar :"; cin >> NumeroBuscar;
+						auto buscar = [&](File* d) {
+							if (d != nullptr) {
+								if (d->GetSize() == NumeroBuscar) {
+									cout << d->GetName() << endl;
+								}
+							}
 
-						cout << sizeTree->find(NumeroBuscar)->GetName() << endl;
+						};
+						sizeTree->inorder(buscar);
+						//cout << sizeTree->find(NumeroBuscar)->GetName() << endl;
 						_getch();
 						system("cls");
 						SeeMenu();
