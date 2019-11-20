@@ -17,6 +17,7 @@ private:
 	path ruta;
 public:
 	typedef AVLFILETREE<File*, string, nullptr> TreeStr;
+	typedef AVLFILETREE<File*, char, nullptr> TreeChr;
 	typedef AVLFILETREE<File*, ulong, nullptr> TreeLong;
 	
 	void SeeMenu() {
@@ -33,11 +34,15 @@ public:
 			auto compExtension = [](File* e) {return e->GetExtension(); };
 			auto compSize = [](File* s) {return s->GetSize(); };
 			auto compDate = [](File* d) {return d->GetDate(); };
+
+			auto compNameFin = [](File* a) { return a->GetName().back(); };
 			// Declaracion de los arboles y sus respectivas comparaciones
 			TreeStr* nameTree = new TreeStr(compName);
 			TreeStr* extensionTree = new TreeStr(compExtension);
 			TreeLong* sizeTree = new TreeLong(compSize);
 			TreeStr* dateTree = new TreeStr(compDate);
+
+			TreeChr* nameTreeFin = new TreeChr(compNameFin);
 			// Busquedad de los archivos en una determinada ruta
 			if (exists(ruta)) {
 				for (const auto& entry : recursive_directory_iterator(ruta)) {
