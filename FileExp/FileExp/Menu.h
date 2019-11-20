@@ -151,7 +151,8 @@ public:
 					case 2: {
 				 		cout << "++++++++++++" << endl;
 						cout << "Size:" << endl;
-						sizeTree->inorder(showSize);
+						//sizeTree->inorder(showSize);
+						sizeTree->Descendente(showSize);//mostrando descendente
 						cout << "\n------------------------" << endl;
 						cout << "El mayor tamanio es :" << sizeTree->ElemMayor()->GetSize(); cout << endl;
 						cout << "El menor tamanio es :" << sizeTree->ElemMenor()->GetSize(); cout << endl;
@@ -176,7 +177,7 @@ public:
 
 					case 4: {
 						cout << "------------------------------" << endl;
-						cout << "Size:" << endl;
+						cout << "Fecha:" << endl;
 						dateTree->inorder(ShowDate);
 						_getch();
 						system("cls");

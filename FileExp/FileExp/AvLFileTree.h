@@ -96,7 +96,13 @@ class AVLFILETREE {
 		}
 	}
 
-
+	void Descendente(Node* node, function<void(T)> Des) {
+		if (node != nullptr) {
+			Descendente(node->right, Des);		
+			Des(node->elem);
+			Descendente(node->left, Des);
+		}
+	}
 
 
 	// BALANCEO!
@@ -188,6 +194,10 @@ public:
 		BuscarElem(root, proc);
 	}
 
+	//mostrando descendente
+	void Descendente(function<void(T)> Des) {
+		Descendente(root, Des);
+	}
 
 };
 
